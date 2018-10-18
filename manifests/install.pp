@@ -13,7 +13,7 @@ class passbolt::install (
   }
 
   apt::key { 'dotdeb':
-    id      => '89DF5277',
+    id      => '6572BBEF1B5FF28B28B706837E3F070089DF5277',
     source  => 'https://www.dotdeb.org/dotdeb.gpg',
   } -> apt::source { 'dotdeb':
     location => 'http://packages.dotdeb.org',
