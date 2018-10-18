@@ -8,9 +8,9 @@
   "project_page": "https://github.com/upaternostro/upaternostro-passbolt",
   "issues_url": "https://github.com/upaternostro/upaternostro-passbolt/issues",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
-    {"name":"puppetlabs-apache","version_requirement":">= 1.2.0"}
-    {"name":"puppetlabs-apt","version_requirement":">= 1.7.0"}
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
+    {"name":"puppetlabs-apache","version_requirement":">= 1.2.0"},
+    {"name":"puppetlabs-apt","version_requirement":">= 1.7.0"},
     {"name":"puppetlabs-vcsrepo","version_requirement":">= 2.0.0"}
   ]
 }
