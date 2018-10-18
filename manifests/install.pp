@@ -12,6 +12,12 @@ class passbolt::install (
     name   => $php5_json_package_name,
   }
 
+  each($additional_packages) |$pkg| {
+    package { "$pkg":
+      ensure => $package_ensure,
+    }
+  }
+
   apt::key { 'dotdeb':
     id      => '6572BBEF1B5FF28B28B706837E3F070089DF5277',
     source  => 'https://www.dotdeb.org/dotdeb.gpg',

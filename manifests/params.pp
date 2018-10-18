@@ -32,6 +32,10 @@ class passbolt::params {
        $git_package_name            = 'git'
        $home_dir                    = '/var/www'
        $path_to_repo                = "$home_dir/passbolt"
+       $additional_packages         = $::operatingsystemmajrelease ? {
+         '8'     => [ 'php5-gnupg', ],
+         default => [],
+      }
     }
     default: {
        warning("OS ${::osfamily} not supported.")
