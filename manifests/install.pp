@@ -77,9 +77,9 @@ class passbolt::install (
     ensure => directory,
     group  => "$group",
     mode   => "2775",
-  } -> package { 'libgpgme11-dev':
+  } -> package { 'libgpgme-dev':
     ensure => $package_ensure,
-    name   => $libgpgme11_dev_package_name,
+    name   => $libgpgme_dev_package_name,
   } -> package { 'php-dev':
     ensure => $package_ensure,
     name   => $php_dev_package_name,

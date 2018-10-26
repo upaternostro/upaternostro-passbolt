@@ -22,13 +22,13 @@ class passbolt::params {
        $user                        = 'www-data'
        $group                       = 'www-data'
        $make_package_name           = 'make'
-       $libgpgme11_dev_package_name = 'libgpgme11-dev'
        $git_package_name            = 'git'
        $home_dir                    = '/var/www'
        $path_to_repo                = "$home_dir/passbolt"
        $php_pear_package_name       = 'php-pear'
        case $::operatingsystemmajrelease {
          '9': {
+           $libgpgme_dev_package_name = 'libgpgme-dev'
            $php_json_package_name     = 'php-json'
            $php_readline_package_name = 'php-readline'
            $php_mysqlnd_package_name  = 'php-mysql'
@@ -40,6 +40,7 @@ class passbolt::params {
            $php_gnupg_conf            = '/etc/php/7.0/apache2/conf.d/20-gnupg.ini'
          }
          '8': {
+           $libgpgme_dev_package_name = 'libgpgme11-dev'
            $php_json_package_name     = 'php5-json'
            $php_readline_package_name = 'php5-readline'
            $php_mysqlnd_package_name  = 'php5-mysqlnd'
@@ -51,6 +52,7 @@ class passbolt::params {
            $php_gnupg_conf            = '/etc/php5/conf.d/50-gnupg.ini'
          }
          default: {
+           $libgpgme_dev_package_name = 'libgpgme11-dev'
            $php_json_package_name     = 'php5-json'
            $php_readline_package_name = 'php5-readline'
            $php_mysqlnd_package_name  = 'php5-mysqlnd'
