@@ -7,9 +7,9 @@ class passbolt::install (
   $mail = 'passbolt@example.com'
 ) inherits passbolt {
 
-  package { 'php5-json':
+  package { 'php-json':
     ensure => $package_ensure,
-    name   => $php5_json_package_name,
+    name   => $php_json_package_name,
   }
 
   each($additional_packages) |$pkg| {
@@ -18,32 +18,32 @@ class passbolt::install (
     }
   }
 
-  if $facts['osfamily'] == 'Debian' and $facts['operatingsystemmajrelease'] < 9 {
+  if $facts['osfamily'] == 'Debian' and $facts['operatingsystemmajrelease'] < '9' {
     apt::key { 'dotdeb':
       id      => '6572BBEF1B5FF28B28B706837E3F070089DF5277',
       source  => 'https://www.dotdeb.org/dotdeb.gpg',
     } -> apt::source { 'dotdeb':
       location => 'http://packages.dotdeb.org',
       repos    => 'all',
-    } -> package { 'php5-readline':
+    } -> package { 'php-readline':
       ensure  => $package_ensure,
-      name    => $php5_readline_package_name,
+      name    => $php_readline_package_name,
     }
   } else {
-    package { 'php5-readline':
+    package { 'php-readline':
       ensure  => $package_ensure,
-      name    => $php5_readline_package_name,
+      name    => $php_readline_package_name,
     }
   }
 
-  package { 'php5-mysqlnd':
+  package { 'php-mysqlnd':
     ensure => $package_ensure,
-    name   => $php5_mysqlnd_package_name,
+    name   => $php_mysqlnd_package_name,
   }
 
-  package { 'php5-gd':
+  package { 'php-gd':
     ensure => $package_ensure,
-    name   => $php5_gd_package_name,
+    name   => $php_gd_package_name,
   }
 
   package { 'git':
@@ -80,23 +80,23 @@ class passbolt::install (
   } -> package { 'libgpgme11-dev':
     ensure => $package_ensure,
     name   => $libgpgme11_dev_package_name,
-  } -> package { 'php5-dev':
+  } -> package { 'php-dev':
     ensure => $package_ensure,
-    name   => $php5_dev_package_name,
-  } -> package { 'php5-pear':
+    name   => $php_dev_package_name,
+  } -> package { 'php-pear':
     ensure => $package_ensure,
-    name   => $php5_pear_package_name,
+    name   => $php_pear_package_name,
   } -> package { 'make':
     ensure => $package_ensure,
     name   => $make_package_name,
   } -> exec { 'pecl install gnupg':
     timeout => 0,
-    creates => '/usr/lib/php5/20100525+lfs/gnupg.so',
+    creates => "${php_so_dir}/gnupg.so",
     path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin',],
-  } -> file { '/etc/php5/conf.d/00-timezone.ini':
+  } -> file { "$php_timezone_conf":
     content => 'date.timezone = Europe/Rome',
     notify  => Service[httpd],
-  } -> file { '/etc/php5/conf.d/50-gnupg.ini':
+  } -> file { "$php_gnupg_conf":
     content => 'extension=gnupg.so',
     notify  => Service[httpd],
   } -> file { "$home_dir/.gnupg":

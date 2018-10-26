@@ -21,21 +21,47 @@ class passbolt::params {
     'Debian': {
        $user                        = 'www-data'
        $group                       = 'www-data'
-       $php5_json_package_name      = 'php5-json'
-       $php5_readline_package_name  = 'php5-readline'
-       $php5_mysqlnd_package_name   = 'php5-mysqlnd'
-       $php5_gd_package_name        = 'php5-gd'
-       $php5_pear_package_name      = 'php-pear'
-       $php5_dev_package_name       = 'php5-dev'
        $make_package_name           = 'make'
        $libgpgme11_dev_package_name = 'libgpgme11-dev'
        $git_package_name            = 'git'
        $home_dir                    = '/var/www'
        $path_to_repo                = "$home_dir/passbolt"
-       $additional_packages         = $::operatingsystemmajrelease ? {
-         '8'     => [ 'php5-gnupg', ],
-         default => [],
-      }
+       $php_pear_package_name       = 'php-pear'
+       case $::operatingsystemmajrelease {
+         '9': {
+           $php_json_package_name     = 'php-json'
+           $php_readline_package_name = 'php-readline'
+           $php_mysqlnd_package_name  = 'php-mysql'
+           $php_gd_package_name       = 'php-gd'
+           $php_dev_package_name      = 'php-dev'
+           $additional_packages       = [ 'php-gnupg', ]
+           $php_so_dir                = '/usr/lib/php/20151012'
+           $php_timezone_conf         = '/etc/php/7.0/apache2/conf.d/00-timezone.ini'
+           $php_gnupg_conf            = '/etc/php/7.0/apache2/conf.d/20-gnupg.ini'
+         }
+         '8': {
+           $php_json_package_name     = 'php5-json'
+           $php_readline_package_name = 'php5-readline'
+           $php_mysqlnd_package_name  = 'php5-mysqlnd'
+           $php_gd_package_name       = 'php5-gd'
+           $php_dev_package_name      = 'php5-dev'
+           $additional_packages       = [ 'php5-gnupg', ]
+           $php_so_dir                = '/usr/lib/php5/20100525+lfs'
+           $php_timezone_conf         = '/etc/php5/conf.d/00-timezone.ini'
+           $php_gnupg_conf            = '/etc/php5/conf.d/50-gnupg.ini'
+         }
+         default: {
+           $php_json_package_name     = 'php5-json'
+           $php_readline_package_name = 'php5-readline'
+           $php_mysqlnd_package_name  = 'php5-mysqlnd'
+           $php_gd_package_name       = 'php5-gd'
+           $php_dev_package_name      = 'php5-dev'
+           $additional_packages       = []
+           $php_so_dir                = '/usr/lib/php5/20100525+lfs'
+           $php_timezone_conf         = '/etc/php5/conf.d/00-timezone.ini'
+           $php_gnupg_conf            = '/etc/php5/conf.d/50-gnupg.ini'
+         }
+       }
     }
     default: {
        warning("OS ${::osfamily} not supported.")
