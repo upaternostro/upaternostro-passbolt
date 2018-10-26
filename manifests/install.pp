@@ -18,15 +18,22 @@ class passbolt::install (
     }
   }
 
-  apt::key { 'dotdeb':
-    id      => '6572BBEF1B5FF28B28B706837E3F070089DF5277',
-    source  => 'https://www.dotdeb.org/dotdeb.gpg',
-  } -> apt::source { 'dotdeb':
-    location => 'http://packages.dotdeb.org',
-    repos    => 'all',
-  } -> package { 'php5-readline':
-    ensure  => $package_ensure,
-    name    => $php5_readline_package_name,
+  if $facts['osfamily'] == 'Debian' and $facts['operatingsystemmajrelease'] < 9 {
+    apt::key { 'dotdeb':
+      id      => '6572BBEF1B5FF28B28B706837E3F070089DF5277',
+      source  => 'https://www.dotdeb.org/dotdeb.gpg',
+    } -> apt::source { 'dotdeb':
+      location => 'http://packages.dotdeb.org',
+      repos    => 'all',
+    } -> package { 'php5-readline':
+      ensure  => $package_ensure,
+      name    => $php5_readline_package_name,
+    }
+  } else {
+    package { 'php5-readline':
+      ensure  => $package_ensure,
+      name    => $php5_readline_package_name,
+    }
   }
 
   package { 'php5-mysqlnd':
