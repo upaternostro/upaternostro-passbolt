@@ -64,16 +64,16 @@ class passbolt::install (
     cwd     => "$path_to_repo",
     creates => "$path_to_repo/app/Vendor/burzum/cakephp-html-purifier/.git",
     path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin',],
-  } -> file { "$path_to_repo/app/Config":
+  } -> file { "$path_to_repo/config":
     ensure => directory,
     owner  => "$user",
     group  => "$group",
-  } -> file { "$path_to_repo/app/tmp":
+  } -> file { "$path_to_repo/tmp":
     ensure  => directory,
     group   => "$group",
     mode    => "2775",
     recurse => true,
-  } -> file { "$path_to_repo/app/webroot/img/public":
+  } -> file { "$path_to_repo/webroot/img/public/images":
     ensure => directory,
     group  => "$group",
     mode   => "2775",
@@ -89,9 +89,16 @@ class passbolt::install (
   } -> package { 'make':
     ensure => $package_ensure,
     name   => $make_package_name,
+  } -> package { 'composer':
+    ensure => $package_ensure,
+    name   => $composer_package_name,
   } -> exec { 'pecl install gnupg':
     timeout => 0,
     creates => "${php_so_dir}/gnupg.so",
+    path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin',],
+  } -> exec { 'composer install --no-dev':
+    timeout => 0,
+    creates => "${path_to_repo}/vendor",
     path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin',],
   } -> file { "$php_timezone_conf":
     content => 'date.timezone = Europe/Rome',
@@ -118,11 +125,11 @@ EOF",
     path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin',],
   } -> exec { 'gnupg --export-secret-keys':
     command => "gpg --homedir $home_dir/.gnupg --armor --export-secret-keys $mail > $path_to_repo/app/Config/gpg/$privateKeyName",
-    creates => "$path_to_repo/app/Config/gpg/$privateKeyName",
+    creates => "$path_to_repo/config/gpg/$privateKeyName",
     path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin',],
   } -> exec { 'gnupg --export':
     command => "gpg --homedir $home_dir/.gnupg --armor --export $mail > $path_to_repo/app/Config/gpg/$publicKeyName",
-    creates => "$path_to_repo/app/Config/gpg/$publicKeyName",
+    creates => "$path_to_repo/config/gpg/$publicKeyName",
     path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin',],
   }
 }

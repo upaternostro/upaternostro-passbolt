@@ -47,8 +47,6 @@ class passbolt (
   $user                = $passbolt::params::user,
   $group               = $passbolt::params::group,
   $mail                = $passbolt::params::mail,
-  $salt                = $passbolt::params::salt,
-  $cipherSeed          = $passbolt::params::cipherSeed,
   $fullBaseUrl         = $passbolt::params::fullBaseUrl,
   $host                = $passbolt::params::host,
   $login               = $passbolt::params::login,
@@ -78,28 +76,13 @@ class passbolt (
     user           => $user,
     group          => $group,
     mail           => $mail,
-  } -> file { 'core.php':
-    path => "$path_to_repo/app/Config/core.php",
+  } -> file { 'passbolt.php':
+    path => "$path_to_repo/config/passbolt.php",
     owner  => "$user",
     group  => "$group",
-    content => template('passbolt/core.php.erb'),
-  } -> file { 'database.php':
-    path => "$path_to_repo/app/Config/database.php",
-    owner  => "$user",
-    group  => "$group",
-    content => template('passbolt/database.php.erb'),
-  } -> file { 'app.php':
-    path => "$path_to_repo/app/Config/app.php",
-    owner  => "$user",
-    group  => "$group",
-    content => template('passbolt/app.php.erb'),
-  } -> file { 'email.php':
-    path => "$path_to_repo/app/Config/email.php",
-    owner  => "$user",
-    group  => "$group",
-    content => template('passbolt/email.php.erb'),
+    content => template('passbolt/passbolt.php.erb'),
   } -> cron { 'EmailQueue.sender':
-    command  => "$path_to_repo/app/Console/cake EmailQueue.sender > $path_to_repo/app/tmp/email.log",
+    command  => "$path_to_repo/bin/cake EmailQueue.sender > $path_to_repo/tmp/email.log",
     user     => "$user",
     hour     => '*',
     minute   => '*',

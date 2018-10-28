@@ -1,7 +1,5 @@
 class passbolt::params {
   $mail = 'passbolt@example.com'
-  $salt = 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi'
-  $cipherSeed = '76859309657453542496749683645'
   $fullBaseUrl = 'https://passbolt.dev'
   $host = 'localhost'
   $login = 'user'
@@ -22,6 +20,7 @@ class passbolt::params {
        $user                        = 'www-data'
        $group                       = 'www-data'
        $make_package_name           = 'make'
+       $composer_package_name       = 'composer'
        $git_package_name            = 'git'
        $home_dir                    = '/var/www'
        $path_to_repo                = "$home_dir/passbolt"
